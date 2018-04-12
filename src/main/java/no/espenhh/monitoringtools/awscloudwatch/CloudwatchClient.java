@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.toList;
 
 public class CloudwatchClient {
 
-    private final AmazonCloudWatch amazonCloudWatch;
+    public final AmazonCloudWatch amazonCloudWatch;
 
     public CloudwatchClient(HasCloudwatchConfig cloudwatchConfig) {
         amazonCloudWatch = AmazonCloudWatchClientBuilder.standard()
@@ -34,10 +34,15 @@ public class CloudwatchClient {
     }
 
     private void postToCloudwatch(String namespace, List<CloudwatchStatistic> statistics) {
-        List<MetricDatum> metricDatumList = statistics.stream()
-                .map(CloudwatchStatistic::toMetricsDatum)
-                .collect(toList());
+        postToCloudwatchRaw(
+                namespace,
+                statistics.stream()
+                        .map(CloudwatchStatistic::toMetricsDatum)
+                        .collect(toList())
+        );
+    }
 
+    public void postToCloudwatchRaw(String namespace, List<MetricDatum> metricDatumList) {
         PutMetricDataRequest request = new PutMetricDataRequest();
         request.setNamespace(namespace);
         request.setMetricData(metricDatumList);

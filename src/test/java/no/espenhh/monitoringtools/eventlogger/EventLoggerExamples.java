@@ -1,7 +1,7 @@
 package no.espenhh.monitoringtools.eventlogger;
 
+import no.espenhh.monitoringtools.AWSSecrets;
 import no.espenhh.monitoringtools.awscloudwatch.CloudwatchClient;
-import no.espenhh.monitoringtools.awscloudwatch.HasCloudwatchConfig;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import org.junit.Test;
 import java.util.Random;
 
 @Ignore
-public class EventLoggerExample {
+public class EventLoggerExamples {
 
     private static final int PERCENT_CHANCE_OF_SUCCESS = 90;
 
@@ -19,22 +19,7 @@ public class EventLoggerExample {
 
     @Before
     public void setup() {
-        CloudwatchClient cloudwatchClient = new CloudwatchClient(new HasCloudwatchConfig() {
-            @Override
-            public String getAWSAccessKeyId() {
-                return "YOUR_ACCESS_KEY";
-            }
-
-            @Override
-            public String getAWSSecretKey() {
-                return "YOUR_SECRET_KEY";
-            }
-
-            @Override
-            public String getRegion() {
-                return "eu-central-1";
-            }
-        });
+        CloudwatchClient cloudwatchClient = new CloudwatchClient(new AWSSecrets());
         eventLogger = new EventLogger(cloudwatchClient, "test-events", 10);
         eventLogger.startScheduledEventPublish();
     }
@@ -119,5 +104,5 @@ public class EventLoggerExample {
     private String fakeUserId() {
         return String.valueOf(RANDOM.nextInt(1000));
     }
-    
+
 }
