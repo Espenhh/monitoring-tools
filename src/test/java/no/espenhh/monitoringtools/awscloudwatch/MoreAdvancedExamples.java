@@ -15,7 +15,7 @@ import java.util.List;
 
 import static java.util.Collections.singletonList;
 
-public class CloudwatchClientExamples {
+public class MoreAdvancedExamples {
 
     private AmazonCloudWatch amazonCloudWatch;
 
